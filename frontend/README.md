@@ -55,16 +55,17 @@ The Team Management Frontend provides the following functionality:
    ```
    The application will be available at http://localhost:3000
 
-### Running with Docker (via Make)
+### Running with Make Commands
 
 If you prefer to use the project's Makefile:
 
 ```bash
-# From the project root
+# Start just the frontend (from the project root)
 make frontend
-```
 
-This command will start the frontend development server.
+# Start both backend and frontend with a single command
+make start-full-stack
+```
 
 ## Development Workflow
 
@@ -97,9 +98,10 @@ This command will start the frontend development server.
 ## Troubleshooting
 
 - **API Connection Issues**: 
-  - Ensure the backend server is running
+  - Ensure the backend server is running (check with `make logs`)
   - Check that REACT_APP_API_URL in your .env file points to the correct API endpoint
   - Confirm there are no CORS issues
+  - Try `make restart` to restart the backend if you're experiencing connection problems
 
 - **Build Errors**:
   - Try clearing your node_modules: `rm -rf node_modules && npm install`

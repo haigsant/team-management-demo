@@ -13,25 +13,19 @@ The Team Management Demo provides the following functionality:
 - **Delete Team Members**: Remove team members who are no longer relevant
 - **Role Management**: Assign either "Regular" or "Admin" roles to team members
 
-## Install and Run Locally
+## Quick Start (Recommended)
 
-### Prerequisites
-
-- Docker and Docker Compose (recommended for running the backend)
-- Node.js and npm (for frontend development only)
-- Python 3.11+ and Poetry 2.0+ (for backend development only)
-
-### Quick Start (Using Docker)
+### Using Docker
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:haigsant/team-management-demo.git
    cd team-management-demo
    ```
 
-2. **Start the backend service**:
+2. **Build and start the backend service**:
    ```bash
-   make start
+   make build-start
    ```
 
 3. **Start the frontend in a separate terminal**:
@@ -39,92 +33,75 @@ The Team Management Demo provides the following functionality:
    make frontend
    ```
 
+   Alternatively, start both with a single command:
+   ```bash
+   make start-full-stack
+   ```
+
 4. **Access the application**:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000/api
    - Django Admin: http://localhost:8000/admin
 
-### Manual Setup (Development Mode)
+## Local Development Setup
 
-#### Backend Setup (with Poetry)
+### Backend (Django)
 
-1. **Navigate to the backend directory**:
+1. **Navigate to backend and install dependencies**:
    ```bash
    cd backend
+   poetry install --no-root
    ```
 
-2. **Install Poetry** (if not already installed):
+2. **Create data directory and configure environment**:
    ```bash
-   # MacOS/Linux/WSL
-   curl -sSL https://install.python-poetry.org | python3 -
+   mkdir -p data
+   cp .env.example .env
+   ```
    
-   # Windows PowerShell
-   (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+   **Important**: Edit the `.env` file and update `SQLITE_PATH` with the absolute path to your database:
+   ```
+   SQLITE_PATH=/your/absolute/path/to/team-management-demo/backend/data/db.sqlite3
    ```
 
-3. **Install dependencies using Poetry**:
+3. **Run migrations and start server**:
    ```bash
-   poetry install
+   poetry run python manage.py makemigrations api
+   poetry run python manage.py migrate
+   poetry run python manage.py runserver
    ```
 
-4. **Activate the Poetry virtual environment**:
-   ```bash
-   poetry shell
-   ```
-   This creates an isolated environment for your project dependencies.
+### Frontend (React)
 
-5. **Run migrations**:
-   ```bash
-   python manage.py makemigrations api
-   python manage.py migrate
-   ```
-
-6. **Create a superuser** (optional):
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Start the development server**:
-   ```bash
-   python manage.py runserver
-   ```
-
-#### Frontend Setup
-
-1. **Navigate to the frontend directory**:
+1. **Navigate to frontend directory and install dependencies**:
    ```bash
    cd frontend
-   ```
-
-2. **Install dependencies**:
-   ```bash
    npm install
    ```
 
-3. **Start the development server**:
+2. **Start the development server**:
    ```bash
    npm start
    ```
 
-### Helpful Make Commands
-
-The project includes a Makefile with several convenient commands:
+## Available Make Commands
 
 - `make help`: Show all available commands with descriptions
-- `make start`: Start the backend service in detached mode (Docker)
+- `make build`: Build the backend service
+- `make start`: Start the backend service (detached mode)
 - `make stop`: Stop the backend service
 - `make restart`: Restart the backend service
-- `make build`: Rebuild the backend service
 - `make logs`: View logs from the backend service
-- `make clean`: Remove all containers, volumes, and images (requires confirmation)
-- `make frontend`: Run the frontend locally in development mode
-- `make test-running-backend`: Run tests on a running backend container
+- `make frontend`: Run the frontend locally
+- `make start-full-stack`: Start both backend and frontend services
 - `make migrate`: Create and apply database migrations
 - `make create-superuser`: Create a Django superuser
-- `make shell`: Open a shell in the backend container
-- `make django-shell`: Open a Django shell for direct database manipulation
 
-Run `make help` to see all available commands with descriptions.
+## Developer Notes
+
+- Docker is the recommended method for running the application
+- When developing locally with Poetry, always use `poetry run` to run Django commands
+- For local development, you must set an absolute path for SQLite in the .env file
 
 ### Sample Backend Testing
 
@@ -133,11 +110,11 @@ To run tests for the backend API:
 ```bash
 # When running locally with Poetry
 cd backend
-poetry shell
-python manage.py test api.tests
+# Run directly with Poetry (no activation needed)
+poetry run python manage.py test api.tests
 
 # When using Docker (requires backend to be running)
-make test-running-backend
+make test-running
 ```
 
 Example test output:
@@ -152,28 +129,3 @@ Ran 4 tests in 0.234s
 OK
 Destroying test database for alias 'default'...
 ```
-
-## Developer Notes
-
-- **Backend Architecture**: The backend follows Django's app-based architecture with a clean separation of models, serializers, and views.
-  
-- **Migration Workflow**: The `make migrate` command handles both creating migrations and applying them. It runs `makemigrations api` followed by `migrate`.
-
-- **Poetry Dependency Management**: 
-  - Dependencies are defined in `backend/pyproject.toml`
-  - Add new dependencies with: `poetry add <package-name>`
-  - Add dev dependencies with: `poetry add --dev <package-name>`
-  - Update dependencies with: `poetry update`
-
-- **API Documentation**: The API follows REST conventions. Use the endpoints listed in the backend README for all CRUD operations.
-
-- **Environment Variables**: For local development, default values are provided. For production, you would need to set proper environment variables.
-
-- **Database**: SQLite is used for simplicity in development. For production, consider switching to PostgreSQL.
-
-- **Troubleshooting Tips**:
-  - Most "table does not exist" errors can be resolved by running migrations
-  - If the frontend can't connect to the backend, check that both services are running
-  - For Docker issues, try rebuilding with `make build` before starting again
-  - The `test-running-backend` command requires the backend to be already running
-  - If Poetry environment issues occur, try running `poetry env remove` and reinstalling
