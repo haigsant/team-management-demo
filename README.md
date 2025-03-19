@@ -6,16 +6,16 @@ A working demo application that allows you to manage team members through a user
 ### App Functionality
 
 <div align="center">
-  <img src="/screenshots/no_members.png" alt="No team members view" width="500px" />
+  <img src="/screenshots/no_members.png" alt="No team members view" width="300px" />
   <p><em>No team members view</em></p>
 
-  <img src="/screenshots/add_member.png" alt="Add team member form" width="500px" />
+  <img src="/screenshots/add_member.png" alt="Add team member form" width="300px" />
   <p><em>Add team member form</em></p>
 
-  <img src="/screenshots/list.png" alt="Team members list view" width="500px" />
+  <img src="/screenshots/list.png" alt="Team members list view" width="300px" />
   <p><em>Team members list view</em></p>
 
-  <img src="/screenshots/delete_member.png" alt="Delete team member confirmation" width="500px" />
+  <img src="/screenshots/delete_member.png" alt="Delete team member confirmation" width="300px" />
   <p><em>Delete team member confirmation</em></p>
 </div>
 
