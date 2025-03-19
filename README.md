@@ -5,6 +5,11 @@ A working demo application that allows you to manage team members through a user
 
 ### App Functionality
 
+![No team members view](./no_members.png)
+![Add team member form](./add_member.png)
+![Team members list view](./list.png)
+![Delete team member confirmation](./delete_member.png)
+
 The Team Management Demo provides the following functionality:
 
 - **View Team Members**: Browse the complete list of team members
