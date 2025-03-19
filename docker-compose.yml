@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    command: >
+      sh -c "mkdir -p /app/data &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+      - sqlite_data:/app/data
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - SQLITE_PATH=/app/data/db.sqlite3
+    mem_limit: 512m
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
